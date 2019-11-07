@@ -2,7 +2,7 @@
 
 I detta exmpel har vi använd twentynineteen tema som aktivt tema för vår Wordpress installation.
 Om du inte har det som standard bör du se över tema specifik kod i footer.php, bara så du inte kopierar
-för mycket kod som inte ska vara i ditt default tema.
+för mycket kod som inte ska vara i ditt aktiva tema.
 
 ### branch 1_2
 Övning: Få in din karta i footern på det tema som är valt i din WordPress installation utan plugins
