@@ -27,6 +27,7 @@ function initMap() {
                 {
                     position: pos,
                     map: map,
+                    animation: google.maps.Animation.DROP,
                     icon: 'https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png'
                 }
             );
