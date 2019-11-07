@@ -1,10 +1,11 @@
 // Funktion som kallas av Google för att skapa vår karta
 // Denna function anger vi i en callback parameter i script
+var map, infoWindow;
 function initMap() {
     // Sätt latitude och longitud i en variabel
     var uluru = {lat: -25.344, lng: 131.036};
     // Instansiera en ny Google Maps com är centrerad på ovanstående kordinater
-    var map = new google.maps.Map(
+    map = new google.maps.Map(
         document.getElementById('map'), {
             zoom: 4,
             center: uluru,
@@ -24,10 +25,30 @@ function initMap() {
         '        </p>\n' +
         '    </div>\n' +
         '</div>';
+
     // Instansiera en nya information ruta och sätt ovanstående html till den
-    var infowindow = new google.maps.InfoWindow({
-        content: contentString
-    });
+    infoWindow = new google.maps.InfoWindow;
+
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(contentString);
+            infoWindow.open(map);
+            map.setCenter(pos);
+        }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+        });
+    } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+    }
+
     // Sätt ut en markering på kartan med positionen från vår variabel
     var marker = new google.maps.Marker(
         {
@@ -41,4 +62,12 @@ function initMap() {
     marker.addListener('click', function() {
         infowindow.open(map, marker);
     });
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+        'Error: The Geolocation service failed.' :
+        'Error: Your browser doesn\'t support geolocation.');
+    infoWindow.open(map);
 }
